@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * An android Fragment used to display an editable List of Servers
  * @author David
  */
 public class ServerListFragment extends EditableListFragment
