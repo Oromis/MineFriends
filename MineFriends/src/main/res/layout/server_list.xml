@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:layout_width="match_parent"
+			  android:layout_height="match_parent"
+			  android:orientation="vertical"
+			  android:divider="@drawable/vertical_divider"
+			  android:showDividers="middle"
+			  android:dividerPadding="5dp">
+
+	<ListView
+			android:id="@id/android:list"
+			android:layout_width="wrap_content"
+			android:layout_height="0dp"
+			android:layout_gravity="center"
+			android:paddingStart="16dp"
+			android:paddingEnd="16dp"
+			android:layout_weight="1"/>
+
+	<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:divider="@drawable/horizontal_divider"
+			android:orientation="horizontal"
+			android:showDividers="middle"
+			android:dividerPadding="5dp">
+
+		<Button
+				android:id="@+id/list_add"
+				style="@android:style/Widget.Holo.Button.Borderless"
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_gravity="left|center_vertical"
+				android:layout_weight="0.4"
+				android:text="@string/server_list_add" />
+
+		<!--<ImageView
+				android:src="@android:drawable/divider_horizontal_dark"
+				android:layout_width="5dp"
+				android:layout_height="wrap_content"
+				android:scaleType="fitXY"
+				android:layout_gravity="center"
+				android:paddingLeft="5dp"
+				android:paddingRight="5dp" />-->
+
+		<Button
+				android:id="@+id/list_clear"
+				style="@android:style/Widget.Holo.Button.Borderless"
+				android:layout_width="0dip"
+				android:layout_height="wrap_content"
+				android:layout_gravity="right|center_vertical"
+				android:layout_weight="0.4"
+				android:text="@string/server_list_clear" />
+	</LinearLayout>
+
+</LinearLayout>

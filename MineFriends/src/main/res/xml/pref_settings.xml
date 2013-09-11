@@ -1,0 +1,54 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<!-- Servers -->
+	<!--<PreferenceScreen
+			android:key="pref_key_servers"
+			android:title="@string/pref_title_servers">
+		<CheckBoxPreference
+				android:key="pref_server"
+				android:title="@string/pref_title_new_message_notifications"
+				android:defaultValue="true" />
+	</PreferenceScreen>-->
+
+	<net.collapse.minefriends.EditableListPreference
+			android:title="@string/pref_title_servers"
+			android:key="pref_key_servers">
+
+	</net.collapse.minefriends.EditableListPreference>
+
+
+	<!-- Notifications -->
+	<PreferenceCategory
+			android:title="@string/pref_header_notifications"
+			android:key="pref_key_notification_settings">
+		<CheckBoxPreference
+				android:key="notifications_new_message"
+				android:title="@string/pref_title_new_message_notifications"
+				android:defaultValue="true" />
+		<RingtonePreference
+				android:dependency="notifications_new_message"
+				android:key="notifications_new_message_ringtone"
+				android:title="@string/pref_title_ringtone"
+				android:ringtoneType="notification"
+				android:defaultValue="content://settings/system/notification_sound" />
+		<CheckBoxPreference
+				android:dependency="notifications_new_message"
+				android:key="notifications_new_message_vibrate"
+				android:title="@string/pref_title_vibrate"
+				android:defaultValue="true" />
+	</PreferenceCategory>
+
+	<!-- Polling -->
+	<PreferenceCategory
+			android:title="@string/pref_header_polling"
+			android:key="pref_key_polling_settings">
+		<ListPreference
+				android:key="poll_frequency"
+				android:title="@string/pref_title_poll_frequency"
+				android:entries="@array/pref_poll_frequency_titles"
+				android:entryValues="@array/pref_poll_frequency_values"
+				android:defaultValue="5"
+				android:negativeButtonText="@null"
+				android:positiveButtonText="@null" />
+	</PreferenceCategory>
+</PreferenceScreen>

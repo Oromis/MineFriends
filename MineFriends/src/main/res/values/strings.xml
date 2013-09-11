@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MineFriends</string>
+    <string name="action_settings">MineFriends</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="hello_world">Hello world!</string>
+	<string name="server_list_add">Add</string>
+	<string name="server_list_clear">Clear</string>
+	<string name="server_item_name">Medium Text</string>
+	<string name="server_item_url">URL</string>
+
+</resources>
