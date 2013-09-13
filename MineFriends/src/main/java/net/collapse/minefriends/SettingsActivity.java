@@ -2,6 +2,7 @@ package net.collapse.minefriends;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import net.collapse.minefriends.network.Queries;
 
 public class SettingsActivity extends Activity
 {
@@ -22,6 +24,8 @@ public class SettingsActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+
+		Queries.INSTANCE.setCallbackExecutor(new AndroidUiThreadExecutor(this));
 
 		this.toDefaultView();
 	}
@@ -43,6 +47,12 @@ public class SettingsActivity extends Activity
 	private void toDefaultView()
 	{
 		FragmentUtils.changeContentTo(new SettingsFragment(), getFragmentManager());
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig)
+	{
+		super.onConfigurationChanged(newConfig);
 	}
 
 	/**
@@ -123,7 +133,7 @@ public class SettingsActivity extends Activity
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public class SettingsFragment extends PreferenceFragment {
+    public static class SettingsFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -139,7 +149,7 @@ public class SettingsActivity extends Activity
 	        if(serverPreference instanceof EditableListPreference)
 	        {
 		        EditableListPreference preference = (EditableListPreference) serverPreference;
-		        preference.setFragmentManager(SettingsActivity.this.getFragmentManager());
+		        preference.setFragmentManager(getFragmentManager());
 		        preference.setFragmentToOpen(new ServerListFragment());
 	        }
         }

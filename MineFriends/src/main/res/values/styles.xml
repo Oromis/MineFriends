@@ -15,6 +15,18 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+
     </style>
+
+	<style name="SpacedItem">
+		<item name="android:paddingLeft">16dp</item>
+		<item name="android:paddingRight">16dp</item>
+	</style>
+
+	<style name="PaddedView">
+		<item name="android:height">48dp</item>
+		<item name="android:minHeight">48dp</item>
+		<item name="android:gravity">center_vertical</item>
+	</style>
 
 </resources>

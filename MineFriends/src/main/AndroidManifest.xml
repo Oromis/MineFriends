@@ -4,6 +4,8 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
+	<uses-permission android:name="android.permission.INTERNET" />
+
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="18" />
@@ -21,14 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity
-            android:name="net.collapse.minefriends.TestActivity"
-            android:label="@string/title_activity_test" >
-            <intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>-->
     </application>
 
 </manifest>

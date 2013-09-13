@@ -9,5 +9,14 @@
 	<string name="server_list_clear">Clear</string>
 	<string name="server_item_name">Medium Text</string>
 	<string name="server_item_url">URL</string>
+	<string name="server_dialog_name">Name</string>
+	<string name="server_dialog_url">URL</string>
+	<string name="server_dialog_port">25565</string>
+	<string name="server_dialog_error_port">That isn\'t exactly a port number.</string>
+	<string name="server_dialog_error_connect_title">Connection Failed</string>
+	<string name="server_dialog_error_connect_message">Could not connect to the server. Either you have a typo in the
+		address, no server exists at this address or the server\'s admin didn\'t enable query (see server.properties)</string>
+	<string name="server_dialog_busy">Checking the server ...</string>
+	<string name="server_dialog_busy_message">Won\'t take long. I promise!</string>
 
 </resources>

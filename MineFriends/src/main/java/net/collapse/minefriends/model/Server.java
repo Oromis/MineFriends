@@ -1,19 +1,23 @@
 package net.collapse.minefriends.model;
 
-import java.net.URL;
-
 /**
  * A server to check for online players
  */
 public class Server
 {
 	private String name;
-	private URL url;
+	private String host;
+	private int port;
 
-	public Server(String name, URL url)
+	public Server()
+	{
+	}
+
+	public Server(String name, String host, int port)
 	{
 		this.name = name;
-		this.url = url;
+		this.host = host;
+		this.port = port;
 	}
 
 	public String getName()
@@ -26,13 +30,33 @@ public class Server
 		this.name = name;
 	}
 
-	public URL getUrl()
+	public String getHost()
 	{
-		return url;
+		return host;
 	}
 
-	public void setUrl(URL url)
+	public void setHost(String host)
 	{
-		this.url = url;
+		this.host = host;
+	}
+
+	public int getPort()
+	{
+		return port;
+	}
+
+	public void setPort(int port)
+	{
+		this.port = port;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Server{" +
+				"name='" + name + '\'' +
+				", host='" + host + '\'' +
+				", port=" + port +
+				'}';
 	}
 }

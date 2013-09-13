@@ -10,11 +10,10 @@
 				android:defaultValue="true" />
 	</PreferenceScreen>-->
 
-	<net.collapse.minefriends.EditableListPreference
+	<net.collapse.minefriends.ServerPreference
 			android:title="@string/pref_title_servers"
 			android:key="pref_key_servers">
-
-	</net.collapse.minefriends.EditableListPreference>
+	</net.collapse.minefriends.ServerPreference>
 
 
 	<!-- Notifications -->
