@@ -1,33 +1,27 @@
 <resources>
-    <string name="title_activity_settings">MineFriends</string>
-
     <!-- Strings related to Settings -->
 
     <!-- Server settings -->
     <string name="pref_title_servers">Servers</string>
 
-	<string name="server_dialog_title">Add a server</string>
-	<string name="server_dialog_ok">Add a server</string>
-	<string name="server_dialog_edit">Edit</string>
-
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_polling">Polling</string>
 
-    <string name="pref_title_poll_frequency">Sync frequency</string>
+    <string name="pref_title_poll_frequency">Poll frequency</string>
     <string-array name="pref_poll_frequency_titles">
-        <item>15 minutes</item>
+		<item>1 minute</item>
+		<item>5 minutes</item>
+		<item>15 minutes</item>
         <item>30 minutes</item>
         <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
         <item>Never</item>
     </string-array>
     <string-array name="pref_poll_frequency_values">
+        <item>1</item>
+        <item>5</item>
         <item>15</item>
         <item>30</item>
         <item>60</item>
-        <item>180</item>
-        <item>360</item>
         <item>-1</item>
     </string-array>
 

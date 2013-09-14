@@ -1,4 +1,4 @@
-package net.collapse.minefriends;
+package net.collapse.minefriends.app;
 
 import android.app.Activity;
 

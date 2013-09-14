@@ -1,11 +1,11 @@
-package net.collapse.minefriends;
+package net.collapse.minefriends.app;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.Preference;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import net.collapse.minefriends.model.StringSerializer;
 
@@ -18,12 +18,14 @@ import java.util.List;
  */
 public abstract class EditableListPreference<D> extends Preference implements EditableListFragment.InvalidationListener<D>
 {
-	private FragmentManager         fragmentManager;
+	private ViewPager               pager;
+	private int                     targetPage;
 	private EditableListFragment<D> fragment;
 
-	protected List<D> data = new ArrayList<D>();
-
 	protected StringSerializer<D> serializer;
+
+	private List<D> data = new ArrayList<D>();
+	private boolean synced = false;
 
 	public EditableListPreference(Context context)
 	{
@@ -46,7 +48,7 @@ public abstract class EditableListPreference<D> extends Preference implements Ed
 		final Parcelable superState = super.onSaveInstanceState();
 
 		// Check whether this Preference is persistent (continually saved)
-		if (isPersistent())
+		if(isPersistent())
 		{
 			// No need to save instance state since it's persistent, use superclass state
 			return superState;
@@ -72,8 +74,8 @@ public abstract class EditableListPreference<D> extends Preference implements Ed
 		super.onRestoreInstanceState(savedState.getSuperState());
 
 		// Set this Preference's widget to reflect the restored state
-		this.data.clear();
-		this.stringToData(savedState.value, this.data);
+		data.clear();
+		this.stringToData(savedState.value, data);
 		if(this.fragment != null)
 		{
 			this.fragment.onDataInvalidation();
@@ -85,7 +87,7 @@ public abstract class EditableListPreference<D> extends Preference implements Ed
 	{
 		super.onClick();
 
-		FragmentUtils.changeContentTo(this.fragment, getFragmentManager());
+		this.pager.setCurrentItem(this.targetPage, true);
 	}
 
 	@Override
@@ -103,37 +105,33 @@ public abstract class EditableListPreference<D> extends Preference implements Ed
 		return new ArrayList<D>();
 	}
 
-	public FragmentManager getFragmentManager()
+	public void setPager(ViewPager pager)
 	{
-		return fragmentManager;
+		this.pager = pager;
 	}
 
-	public void setFragmentManager(FragmentManager fragmentManager)
+	public void setTargetPage(int targetPage)
 	{
-		this.fragmentManager = fragmentManager;
+		this.targetPage = targetPage;
 	}
 
-	public void setFragmentToOpen(EditableListFragment<D> fragment)
+	public void setFragment(EditableListFragment<D> fragment)
 	{
 		this.fragment = fragment;
-		this.fragment.setData(this.data);
 		this.fragment.setListener(this);
-	}
 
-	public List<D> getData()
-	{
-		return data;
-	}
-
-	public void setSerializer(StringSerializer<D> serializer)
-	{
-		this.serializer = serializer;
+		List<D> data = this.fragment.getData();
+		if(data != this.data)   // Intentional reference equality check
+		{
+			data.addAll(this.data);
+		}
+		this.data = data;
 	}
 
 	public String dataToString()
 	{
 		StringBuilder storage = new StringBuilder();
-		for(D d : data)
+		for(D d : this.data)
 		{
 			if(storage.length() != 0)
 			{
@@ -149,7 +147,7 @@ public abstract class EditableListPreference<D> extends Preference implements Ed
 		String[] parts = storage.split("\\|\\|");
 		for(String part : parts)
 		{
-			D object = serializer.fromString(this.getPersistedString(""));
+			D object = serializer.fromString(part);
 			if(object != null)
 			{
 				result.add(object);
@@ -160,15 +158,15 @@ public abstract class EditableListPreference<D> extends Preference implements Ed
 	public void saveData()
 	{
 		String storage = this.dataToString();
-		this.persistString(storage.toString());
+		this.persistString(storage);
 	}
 
 	public void loadData()
 	{
 		String storage = this.getPersistedString("");
 
-		this.data.clear();
-		this.stringToData(storage, this.data);
+		data.clear();
+		this.stringToData(storage, data);
 
 		if(this.fragment != null)
 		{

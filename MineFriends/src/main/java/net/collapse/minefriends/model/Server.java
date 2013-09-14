@@ -5,6 +5,8 @@ package net.collapse.minefriends.model;
  */
 public class Server
 {
+	public static final int DEFAULT_PORT = 25565;
+
 	private String name;
 	private String host;
 	private int port;

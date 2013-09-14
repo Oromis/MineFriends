@@ -1,4 +1,4 @@
-package net.collapse.minefriends;
+package net.collapse.minefriends.app;
 
 import android.app.ListFragment;
 import android.os.Bundle;
@@ -7,13 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EditableListFragment<D> extends ListFragment
 {
 	protected int rootViewId;
 
-	protected List<D> data;
+	protected List<D> data = new ArrayList<D>();
 
 	protected InvalidationListener<D> listener;
 

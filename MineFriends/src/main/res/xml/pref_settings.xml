@@ -10,11 +10,15 @@
 				android:defaultValue="true" />
 	</PreferenceScreen>-->
 
-	<net.collapse.minefriends.ServerPreference
+	<net.collapse.minefriends.app.settings.server.ServerPreference
 			android:title="@string/pref_title_servers"
 			android:key="pref_key_servers">
-	</net.collapse.minefriends.ServerPreference>
+	</net.collapse.minefriends.app.settings.server.ServerPreference>
 
+	<net.collapse.minefriends.app.settings.friends.FriendsPreference
+			android:title="@string/pref_title_friends"
+			android:key="pref_key_friends">
+	</net.collapse.minefriends.app.settings.friends.FriendsPreference>
 
 	<!-- Notifications -->
 	<PreferenceCategory
@@ -23,6 +27,7 @@
 		<CheckBoxPreference
 				android:key="notifications_new_message"
 				android:title="@string/pref_title_new_message_notifications"
+				android:summary="@string/pref_notification_summary"
 				android:defaultValue="true" />
 		<RingtonePreference
 				android:dependency="notifications_new_message"

@@ -1,4 +1,4 @@
-package net.collapse.minefriends;
+package net.collapse.minefriends.app.settings.server;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+import net.collapse.minefriends.app.Constants;
+import net.collapse.minefriends.app.EditableListFragment;
+import net.collapse.minefriends.R;
 import net.collapse.minefriends.model.Server;
 import net.collapse.minefriends.model.ServerState;
 import net.collapse.minefriends.network.Queries;
@@ -26,11 +28,9 @@ import java.util.List;
  * An android Fragment used to display an editable List of Servers
  * @author David
  */
-public class ServerListFragment extends EditableListFragment<Server> implements DialogCompletionListener
+public class ServerListFragment extends EditableListFragment<Server> implements ServerDialogCompletionListener,
+		ServerDialogSpawner
 {
-	private static final String PROTOCOL = "tcp";
-	private static final int DEFAULT_PORT = 25565;
-
 	private ServerAdapter serverAdapter;
 
 	public ServerListFragment()
@@ -61,7 +61,9 @@ public class ServerListFragment extends EditableListFragment<Server> implements 
 			}
 		});
 
-		this.setListAdapter(this.serverAdapter = new ServerAdapter(getActivity(), R.layout.server_item, this.data));
+		this.serverAdapter = new ServerAdapter(getActivity(), R.layout.server_item, this.data);
+		this.serverAdapter.setServerDialogSpawner(this);
+		this.setListAdapter(this.serverAdapter);
 
 		return view;
 	}
@@ -92,7 +94,7 @@ public class ServerListFragment extends EditableListFragment<Server> implements 
 
 	private void showServerDialog()
 	{
-		this.showServerDialog("", "", String.valueOf(DEFAULT_PORT));
+		this.showServerDialog(null);
 	}
 
 	private void showServerDialog(String name, String url, String port)
@@ -103,7 +105,7 @@ public class ServerListFragment extends EditableListFragment<Server> implements 
 
 	private void dialogFailed(int messageId, Server server)
 	{
-		new ErrorDialog(messageId, server)
+		new ErrorDialog(messageId, server, this)
 				.show(getFragmentManager(), null);
 	}
 
@@ -145,13 +147,24 @@ public class ServerListFragment extends EditableListFragment<Server> implements 
 				}
 				else
 				{
-					// Ok, create a list entry
-					data.add(server);
+					// Ok, create a list entry if necessary
+					if(!data.contains(server))
+					{
+						data.add(server);
+					}
 					serverAdapter.notifyDataSetChanged();
 					notifyDataInvalidation();
 				}
 			}
 		});
+	}
+
+	@Override
+	public void onDelete(Server server)
+	{
+		this.data.remove(server);
+		serverAdapter.notifyDataSetChanged();
+		notifyDataInvalidation();
 	}
 
 	@Override
@@ -166,9 +179,15 @@ public class ServerListFragment extends EditableListFragment<Server> implements 
 		serverAdapter.notifyDataSetChanged();
 	}
 
+	@Override
+	public void spawn(Server server)
+	{
+		this.showServerDialog(server);
+	}
+
 	private static final class ServerAdapter extends ArrayAdapter<Server>
 	{
-		private List<Server> urls;
+		private ServerDialogSpawner serverDialogSpawner;
 
 		public ServerAdapter(Context context, int resource)
 		{
@@ -178,13 +197,12 @@ public class ServerListFragment extends EditableListFragment<Server> implements 
 		public ServerAdapter(Context context, int resource, List<Server> objects)
 		{
 			super(context, resource, objects);
-			this.urls = objects;
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent)
 		{
-			Server server = urls.get(position);
+			final Server server = this.getItem(position);
 			View view = LayoutInflater.from(getContext()).inflate(R.layout.server_item, null);
 			TextView nameView = (TextView) view.findViewById(R.id.server_item_name);
 			nameView.setText(server.getName());
@@ -192,125 +210,35 @@ public class ServerListFragment extends EditableListFragment<Server> implements 
 			TextView urlView = (TextView) view.findViewById(R.id.server_item_url);
 			urlView.setText(server.getHost() + ":" + server.getPort());
 
+			view.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					serverDialogSpawner.spawn(server);
+				}
+			});
+
 			return view;
 		}
+
+		public void setServerDialogSpawner(ServerDialogSpawner serverDialogSpawner)
+		{
+			this.serverDialogSpawner = serverDialogSpawner;
+		}
 	}
 
-	/**
-	 * Shows the dialog used to create and edit servers
-	 */
-	private static final class ServerDialogFragment extends DialogFragment
-	{
-		private DialogCompletionListener dialogCompletionListener;
-
-		private Server server;
-
-		public ServerDialogFragment setDialogCompletionListener(DialogCompletionListener dialogCompletionListener)
-		{
-			this.dialogCompletionListener = dialogCompletionListener;
-			return this;
-		}
-
-		public ServerDialogFragment setServer(Server server)
-		{
-			this.server = server;
-			return this;
-		}
-
-		@Override
-		public Dialog onCreateDialog(Bundle savedInstanceState)
-		{
-			final View view = getActivity().getLayoutInflater().inflate(R.layout.server_dialog, null);
-			if(server != null)
-			{
-				((EditText) view.findViewById(R.id.server_dialog_name)).setText(server.getName());
-				((EditText) view.findViewById(R.id.server_dialog_url)).setText(server.getHost());
-				((EditText) view.findViewById(R.id.server_dialog_port))
-						.setText(String.valueOf(server.getPort()));
-			}
-
-			AlertDialog dialog = new AlertDialog.Builder(getActivity())
-					.setTitle(R.string.server_dialog_title)
-					.setView(view)
-					.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialog, int which)
-						{
-							EditText nameField = (EditText) view.findViewById(R.id.server_dialog_name);
-							EditText urlField = (EditText) view.findViewById(R.id.server_dialog_url);
-							EditText portField = (EditText) view.findViewById(R.id.server_dialog_port);
-
-							String portString = portField.getText().toString();
-							if(portString.length() == 0)
-							{
-								portString = portField.getHint().toString();
-							}
-
-							String urlString = urlField.getText().toString();
-							String name = nameField.getText().toString();
-
-							int port;
-							try
-							{
-								port = Integer.parseInt(portString);
-								if(port > 2 << 16 - 1)  // 2 ^ 16 - 1
-								{
-									// Invalid Port number
-									throw new NumberFormatException();
-								}
-							}
-							catch(NumberFormatException e)
-							{
-								if(dialogCompletionListener != null)
-								{
-									dialogCompletionListener.onFail(server, e, R.string.server_dialog_error_port);
-								}
-								return;
-							}
-
-							name = name.replaceAll("\\|", ":");    // Pipe is used as separator
-
-							if(server == null)
-							{
-								server = new Server(name, urlString, port);
-							}
-							else
-							{
-								server.setName(name);
-								server.setHost(urlString);
-								server.setPort(port);
-							}
-
-							if(dialogCompletionListener != null)
-							{
-								dialogCompletionListener.onSuccess(server);
-							}
-						}
-					})
-					.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialog, int which)
-						{
-							dialog.cancel();
-						}
-					})
-					.create();
-			return dialog;
-		}
-
-	}
-
-	private final class ErrorDialog extends DialogFragment
+	private final static class ErrorDialog extends DialogFragment
 	{
 		private final int    textId;
 		private final Server server;
+		private final ServerDialogSpawner serverDialogSpawner;
 
-		private ErrorDialog(int textId, Server server)
+		private ErrorDialog(int textId, Server server, ServerDialogSpawner serverDialogSpawner)
 		{
 			this.textId = textId;
 			this.server = server;
+			this.serverDialogSpawner = serverDialogSpawner;
 		}
 
 		@Override
@@ -325,7 +253,7 @@ public class ServerListFragment extends EditableListFragment<Server> implements 
 						public void onClick(DialogInterface dialog, int which)
 						{
 							dialog.dismiss();
-							showServerDialog(server);
+							serverDialogSpawner.spawn(server);
 						}
 					})
 					.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener()

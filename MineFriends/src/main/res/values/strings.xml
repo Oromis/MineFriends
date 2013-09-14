@@ -2,21 +2,35 @@
 <resources>
 
     <string name="app_name">MineFriends</string>
-    <string name="action_settings">MineFriends</string>
-    <string name="title_activity_test">TestActivity</string>
-    <string name="hello_world">Hello world!</string>
-	<string name="server_list_add">Add</string>
-	<string name="server_list_clear">Clear</string>
-	<string name="server_item_name">Medium Text</string>
-	<string name="server_item_url">URL</string>
-	<string name="server_dialog_name">Name</string>
-	<string name="server_dialog_url">URL</string>
-	<string name="server_dialog_port">25565</string>
-	<string name="server_dialog_error_port">That isn\'t exactly a port number.</string>
-	<string name="server_dialog_error_connect_title">Connection Failed</string>
-	<string name="server_dialog_error_connect_message">Could not connect to the server. Either you have a typo in the
+    <string name="action_settings">Settings</string>
+	<string name="title_activity_settings">Settings</string>
+    <string name="server_list_add">Add</string>
+    <string name="server_list_clear">Clear</string>
+    <string name="server_item_name">Medium Text</string>
+    <string name="server_item_url">URL</string>
+    <string name="server_dialog_name">Name</string>
+    <string name="server_dialog_url">URL</string>
+    <string name="server_dialog_port">25565</string>
+    <string name="server_dialog_error_port">That isn\'t exactly a port number.</string>
+    <string name="server_dialog_error_connect_title">Connection Failed</string>
+    <string name="server_dialog_error_connect_message">Could not connect to the server. Either you have a typo in the
 		address, no server exists at this address or the server\'s admin didn\'t enable query (see server.properties)</string>
-	<string name="server_dialog_busy">Checking the server ...</string>
-	<string name="server_dialog_busy_message">Won\'t take long. I promise!</string>
+    <string name="server_dialog_busy">Checking the server ...</string>
+    <string name="server_dialog_busy_message">Won\'t take long. I promise!</string>
+    <string name="settings_title_main">Settings</string>
+    <string name="settings_title_servers">Servers</string>
+    <string name="server_dialog_title_add">Add server</string>
+    <string name="server_dialog_title_edit">Edit server</string>
+    <string name="server_dialog_edit">Edit</string>
+    <string name="settings_title_friends">Friends</string>
+    <string name="pref_title_friends">Friends</string>
+    <string name="friends_dialog_name">Minecraft-Username</string>
+    <string name="friends_dialog_title_add">Add friend</string>
+    <string name="friends_dialog_title_edit">Edit friend</string>
+    <string name="delete">Delete</string>
+    <string name="pref_notification_summary">Notify when a friend joins a server</string>
+    <string name="title_activity_main">MineFriends</string>
+	<string name="main_settings">Settings</string>
+	<string name="main_servers">View servers</string>
 
 </resources>

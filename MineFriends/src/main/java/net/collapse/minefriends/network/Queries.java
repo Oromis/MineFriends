@@ -1,7 +1,7 @@
 package net.collapse.minefriends.network;
 
 import android.util.Log;
-import net.collapse.minefriends.Constants;
+import net.collapse.minefriends.app.Constants;
 import net.collapse.minefriends.model.Server;
 import net.collapse.minefriends.model.ServerState;
 
@@ -13,7 +13,6 @@ import java.net.SocketTimeoutException;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.channels.DatagramChannel;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,10 +35,6 @@ public enum Queries implements Runnable
 
 	private static final long PACKET_TIMEOUT = 2000;
 
-	private final Thread worker;
-
-	private DatagramChannel channel;
-
 	private Map<Integer, Request> requests     = new ConcurrentHashMap<Integer, Request>();
 	private Queue<Request>        requestQueue = new ConcurrentLinkedQueue<Request>();
 
@@ -47,7 +42,7 @@ public enum Queries implements Runnable
 
 	private Queries()
 	{
-		worker = new Thread(this);
+		Thread worker = new Thread(this);
 		worker.setDaemon(true);
 		worker.start();
 	}
@@ -60,7 +55,7 @@ public enum Queries implements Runnable
 			DatagramSocket socket = new DatagramSocket();
 			socket.setSoTimeout(100);
 
-			while(true)
+			while(!Thread.currentThread().isInterrupted())
 			{
 				try
 				{

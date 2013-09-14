@@ -1,7 +1,8 @@
-package net.collapse.minefriends;
+package net.collapse.minefriends.app.settings.server;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import net.collapse.minefriends.app.EditableListPreference;
 import net.collapse.minefriends.model.Server;
 import net.collapse.minefriends.model.ServerSerializer;
 
